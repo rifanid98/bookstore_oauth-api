@@ -23,5 +23,7 @@ func StartApplication() {
 	handler := handler.New(services.New(repository.New()))
 
 	router.GET("/oauth/token/:token_id", handler.GetById)
+	router.POST("/oauth/token", handler.Create)
+	router.PATCH("/oauth/token", handler.Update)
 	router.Run(":8080")
 }

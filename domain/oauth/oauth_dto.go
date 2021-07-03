@@ -1,6 +1,8 @@
 package oauth
 
 import (
+	resp "bookstore_oauth-api/utils/response"
+	"strings"
 	"time"
 )
 
@@ -23,4 +25,21 @@ func GetAccessToken() *AccessToken {
 
 func (at *AccessToken) IsExpired() bool {
 	return time.Unix(at.Expires, 0).Before(time.Now().UTC())
+}
+
+func (at *AccessToken) Validate() *resp.RestErr {
+	accessToken := strings.TrimSpace(at.AccessToken)
+	if len(accessToken) < 1 {
+		return resp.BadRequest("Access tokens cannot be empty")
+	}
+	if at.UserId < 1 {
+		return resp.BadRequest("User ID cannot be 0")
+	}
+	if at.ClientId < 1 {
+		return resp.BadRequest("Client ID cannot be 0")
+	}
+	if at.Expires < 1 {
+		return resp.BadRequest("Expires cannot be 0")
+	}
+	return nil
 }

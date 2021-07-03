@@ -8,6 +8,8 @@ import (
 
 type Service interface {
 	GetById(string) (*oauth.AccessToken, *resp.RestErr)
+	Create(*oauth.AccessToken) *resp.RestErr
+	Update(*oauth.AccessToken) *resp.RestErr
 }
 
 type service struct {
@@ -20,6 +22,20 @@ func (s *service) GetById(tokenId string) (*oauth.AccessToken, *resp.RestErr) {
 		return nil, err
 	}
 	return at, nil
+}
+
+func (s *service) Create(at *oauth.AccessToken) *resp.RestErr {
+	if err := at.Validate(); err != nil {
+		return err
+	}
+	return s.repository.Create(at)
+}
+
+func (s *service) Update(at *oauth.AccessToken) *resp.RestErr {
+	if err := at.Validate(); err != nil {
+		return err
+	}
+	return s.repository.Update(at)
 }
 
 func New(repo repo.Repository) Service {
