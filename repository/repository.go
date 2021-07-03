@@ -18,14 +18,10 @@ type Repository interface {
 type repository struct{}
 
 func (repo *repository) GetById(tokenId string) (*oauth.AccessToken, *resp.RestErr) {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return nil, resp.InternalServerError(err.Error())
-	}
-	defer session.Close()
+	session := cassandra.GetSession()
 
 	var accessToken oauth.AccessToken
-	err = session.Query(GetAccessTokenQuery, tokenId).Scan(
+	err := session.Query(GetAccessTokenQuery, tokenId).Scan(
 		&accessToken.AccessToken,
 		&accessToken.UserId,
 		&accessToken.ClientId,
@@ -42,13 +38,9 @@ func (repo *repository) GetById(tokenId string) (*oauth.AccessToken, *resp.RestE
 }
 
 func (repo *repository) Create(at *oauth.AccessToken) *resp.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return resp.InternalServerError(err.Error())
-	}
-	defer session.Close()
+	session := cassandra.GetSession()
 
-	err = session.Query(
+	err := session.Query(
 		CreateAccessTokenQuery,
 		at.AccessToken,
 		at.UserId,
@@ -63,13 +55,9 @@ func (repo *repository) Create(at *oauth.AccessToken) *resp.RestErr {
 }
 
 func (repo *repository) Update(at *oauth.AccessToken) *resp.RestErr {
-	session, err := cassandra.GetSession()
-	if err != nil {
-		return resp.InternalServerError(err.Error())
-	}
-	defer session.Close()
+	session := cassandra.GetSession()
 
-	err = session.Query(
+	err := session.Query(
 		UpdateQuery,
 		at.UserId,
 		at.ClientId,
