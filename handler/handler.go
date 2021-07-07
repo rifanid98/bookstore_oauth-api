@@ -21,7 +21,11 @@ type accessTokenHandler struct {
 }
 
 func (h *accessTokenHandler) GetById(c *gin.Context) {
-	token, err := h.service.GetById(strings.TrimSpace(c.Param("token_id")))
+	tokenId := strings.TrimSpace(c.Param("token_id"))
+	if len(tokenId) < 1 {
+		c.JSON(http.StatusBadRequest, resp.BadRequest("invalid token id"))
+	}
+	token, err := h.service.GetById(tokenId)
 	if err != nil {
 		c.JSON(int(err.StatusCode), err)
 		return
@@ -30,15 +34,18 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 }
 
 func (h *accessTokenHandler) Create(c *gin.Context) {
-	var at oauth.AccessToken
-	if err := c.ShouldBindJSON(&at); err != nil {
+	var atr oauth.AccessTokenRequest
+	if err := c.ShouldBindJSON(&atr); err != nil {
 		c.JSON(http.StatusBadRequest, resp.BadRequest("invalid json body"))
 		return
 	}
-	if err := h.service.Create(&at); err != nil {
+
+	at, err := h.service.Create(&atr)
+	if err != nil {
 		c.JSON(int(err.StatusCode), err)
 		return
 	}
+
 	c.JSON(http.StatusOK, resp.Success(at))
 	return
 }

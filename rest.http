@@ -1,17 +1,19 @@
 
-GET http://localhost:8080/oauth/token/1
+GET http://localhost:8001/oauth/token/1
 ###
-POST http://localhost:8080/oauth/token HTTP/1.1
+POST http://localhost:8001/oauth/token HTTP/1.1
 Content-Type: application/json
 
 {
-  "token": "1",
-  "user_id": 1,
-  "client_id": 1,
-  "expires": 1
+  "grant_type": "password",
+  "scope": "scope",
+  "username": "adninsijawa.office@gmail.com",
+  "password": "password",
+  "client_id": 2,
+  "client_secret": "client_secret"
 }
 ###
-PATCH http://localhost:8080/oauth/token HTTP/1.1
+PATCH http://localhost:8001/oauth/token HTTP/1.1
 Content-Type: application/json
 
 {

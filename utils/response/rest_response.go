@@ -22,6 +22,14 @@ func BadRequest(error string) *RestErr {
 	}
 }
 
+func Unauthorized(error string) *RestErr {
+	return &RestErr{
+		StatusCode: http.StatusUnauthorized,
+		Message:    http.StatusText(http.StatusUnauthorized),
+		Error:      error,
+	}
+}
+
 func NotImplemented(error string) *RestErr {
 	return &RestErr{
 		StatusCode: http.StatusNotImplemented,
