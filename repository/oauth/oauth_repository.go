@@ -3,8 +3,9 @@ package repository
 import (
 	"bookstore_oauth-api/client/cassandra"
 	oauth "bookstore_oauth-api/domain/oauth"
-	resp "bookstore_oauth-api/utils/response"
 	"fmt"
+
+	resp "github.com/rifanid98/bookstore_utils-go/response"
 
 	"github.com/gocql/gocql"
 )
@@ -34,7 +35,7 @@ func (repo *oauthRepository) GetById(tokenId string) (*oauth.AccessToken, *resp.
 		if err == gocql.ErrNotFound {
 			return nil, resp.NotFound(fmt.Sprintf("access token with token id %s not found", tokenId))
 		}
-		return nil, resp.InternalServerError(err.Error())
+		return nil, resp.InternalServer(err.Error())
 	}
 
 	return &accessToken, nil
@@ -51,7 +52,7 @@ func (repo *oauthRepository) Create(at *oauth.AccessToken) *resp.RestErr {
 		&at.Expires,
 	).Exec()
 	if err != nil {
-		return resp.InternalServerError(err.Error())
+		return resp.InternalServer(err.Error())
 	}
 
 	return nil
@@ -68,7 +69,7 @@ func (repo *oauthRepository) Update(at *oauth.AccessToken) *resp.RestErr {
 		at.AccessToken,
 	).Exec()
 	if err != nil {
-		return resp.InternalServerError(err.Error())
+		return resp.InternalServer(err.Error())
 	}
 
 	return nil

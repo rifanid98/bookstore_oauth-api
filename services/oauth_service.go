@@ -5,7 +5,8 @@ import (
 	"bookstore_oauth-api/domain/users"
 	oauthRepo "bookstore_oauth-api/repository/oauth"
 	usersRepo "bookstore_oauth-api/repository/users"
-	resp "bookstore_oauth-api/utils/response"
+
+	resp "github.com/rifanid98/bookstore_utils-go/response"
 )
 
 type Service interface {

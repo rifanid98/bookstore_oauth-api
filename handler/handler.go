@@ -3,9 +3,10 @@ package handler
 import (
 	"bookstore_oauth-api/domain/oauth"
 	"bookstore_oauth-api/services"
-	resp "bookstore_oauth-api/utils/response"
 	"net/http"
 	"strings"
+
+	resp "github.com/rifanid98/bookstore_utils-go/response"
 
 	"github.com/gin-gonic/gin"
 )

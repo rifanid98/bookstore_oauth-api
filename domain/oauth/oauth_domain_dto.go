@@ -1,11 +1,12 @@
 package oauth
 
 import (
-	hash "bookstore_oauth-api/utils/hash"
-	resp "bookstore_oauth-api/utils/response"
 	"fmt"
 	"strings"
 	"time"
+
+	hash "github.com/rifanid98/bookstore_utils-go/hash"
+	resp "github.com/rifanid98/bookstore_utils-go/response"
 )
 
 const (

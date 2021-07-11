@@ -2,10 +2,11 @@ package repository
 
 import (
 	"bookstore_oauth-api/domain/users"
-	resp "bookstore_oauth-api/utils/response"
 	"encoding/json"
 	"fmt"
 	"time"
+
+	resp "github.com/rifanid98/bookstore_utils-go/response"
 
 	"github.com/mercadolibre/golang-restclient/rest"
 )
@@ -29,14 +30,14 @@ var UserRepository IUserRepository = &userRepository{}
 func (repo *userRepository) Login(ul *users.UserLogin) (*users.User, *resp.RestErr) {
 	res := restClient.Post("/users/login", ul)
 	if res == nil || res.Response == nil {
-		return nil, resp.InternalServerError("failed to login")
+		return nil, resp.InternalServer("failed to login")
 	}
 
 	if res.StatusCode > 299 {
 		var restErr *resp.RestErr
 		err := json.Unmarshal(res.Bytes(), &restErr)
 		if err != nil {
-			return nil, resp.InternalServerError("failed to parse data response from users service")
+			return nil, resp.InternalServer("failed to parse data response from users service")
 		}
 		return nil, restErr
 	}
@@ -46,7 +47,7 @@ func (repo *userRepository) Login(ul *users.UserLogin) (*users.User, *resp.RestE
 	}
 	if err := json.Unmarshal(res.Bytes(), &restResp); err != nil {
 		fmt.Println(err.Error())
-		return nil, resp.InternalServerError("failed to parse users data")
+		return nil, resp.InternalServer("failed to parse users data")
 	}
 
 	return restResp.Data, nil
